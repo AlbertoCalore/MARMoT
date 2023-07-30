@@ -1,0 +1,22 @@
+Package: MARMoT
+Title: Matching on Poset-Based Average Rank for Multiple Treatments (MARMoT)
+Version: 0.0.1
+Authors@R: 
+    person("Alberto", "Calore", , "calorealberto57@gmail.com", role = c("aut", "cre"))
+Description: This package contains the function to apply MARMoT balancing technique; 
+             furthermore it contains a function for computing the Deloof's approximation of the average rank 
+             (and also a parallelized version) and a function to compute the Absolute Standardized Bias. 
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    parallel,
+    parsec,
+    stats
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 3.5.0)
+LazyData: true
