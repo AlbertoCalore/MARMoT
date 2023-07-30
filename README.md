@@ -6,14 +6,17 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of MARMoT is to …
+This package contains the function to apply MARMoT balancing technique;
+furthermore it contains a function for computing the Deloof’s
+approximation of the average rank (and also a parallelized version) and
+a function to compute the Absolute Standardized Bias.
 
 ## Installation
 
 You can install the development version of MARMoT like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+devtools::install_github("AlbertoCalore/MARMoT")
 ```
 
 ## Example
