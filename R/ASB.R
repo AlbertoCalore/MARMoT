@@ -105,7 +105,8 @@ ASB.table = function(ASB_data_single, ASB_data){
 # -------------------------------------------------------------------------
 
 ASB.tab.single.name = function(c, data){
-  lvs = levels(data[, c])
+  if(is.factor(data[, c]))
+    {lvs = levels(data[, c])}else{lvs = unique(data[, c])}
   nms = paste0(c, sep = "_", lvs)
   if(length(nms) == 2){nms = nms[1]}
   return(nms)
