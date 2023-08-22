@@ -1,6 +1,6 @@
 #' Data to showcase MARMoT and ASB functions
 #'
-#' An example dataset where our treatment is the hospital structure
+#' An example dataset where our treatment is the hospital structure.
 #'
 #'
 #' @format ## `MARMoT_data`

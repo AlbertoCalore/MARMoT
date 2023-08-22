@@ -1,15 +1,18 @@
 #' Average rank with Deloof's approximation (parallel computing)
 #'
 #' @description
-#' Compute the average with using Deloof's approximation, using parallel computing; it can be used only on Linux and Mac systems!
+#' Compute the average with using Deloof's approximation, using parallel
+#' computing; it can be used only on Linux and Mac systems!
 #'
 #' @param comparable_data
-#' a dataframe or equivalent, which columns are ordered factors or numeric variables
+#' A dataframe or equivalent, which columns are ordered factors or numeric
+#' variables.
 #' @param n.cores
-#' number of cores to be used
+#' Number of cores to be used.
 #'
 #' @return
-#' a vector containing the average rank of all the observations (it's recommended to normalized it before use)
+#' A vector containing the average rank of all the observations (it is
+#' recommended to normalized it before use).
 #' @export
 #'
 #' @examples

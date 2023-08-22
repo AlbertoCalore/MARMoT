@@ -1,21 +1,22 @@
 #' Absolute standardized bias
 #'
 #' @description
-#' Compute the absolute standardized bias of given confounders and return some useful statistics
+#' Compute the absolute standardized bias of given confounders and return some
+#' useful statistics.
 #'
 #' @param data
-#' a dataframe or equivalent
+#' A dataframe or equivalent.
 #' @param confounders
-#' a vector containing the column names of the confounders to balance by
+#' A vector with the column names of the confounders to balance by.
 #' @param treatment
-#' a string indicating the column name of the treatment variable
+#' A string with the column name of the treatment variable.
 #'
 #' @return
-#' a list of objects, containing the ASB matrix and some summary statistics
+#' A list of objects, containing the ASB matrix and some summary statistics.
 #' @export
 #'
 #' @examples
-#' out = ASB(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital")
+#' ASB(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital")
 #'
 ASB = function(data, confounders, treatment){
 

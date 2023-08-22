@@ -7,19 +7,20 @@
 ASB(data, confounders, treatment)
 }
 \arguments{
-\item{data}{a dataframe or equivalent}
+\item{data}{A dataframe or equivalent.}
 
-\item{confounders}{a vector containing the column names of the confounders to balance by}
+\item{confounders}{A vector with the column names of the confounders to balance by.}
 
-\item{treatment}{a string indicating the column name of the treatment variable}
+\item{treatment}{A string with the column name of the treatment variable.}
 }
 \value{
-a list of objects, containing the ASB matrix and some summary statistics
+A list of objects, containing the ASB matrix and some summary statistics.
 }
 \description{
-Compute the absolute standardized bias of given confounders and return some useful statistics
+Compute the absolute standardized bias of given confounders and return some
+useful statistics.
 }
 \examples{
-out = ASB(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital")
+ASB(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital")
 
 }

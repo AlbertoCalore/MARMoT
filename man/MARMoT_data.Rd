@@ -21,6 +21,6 @@ A data frame with 8450 rows and 3 columns:
 MARMoT_data
 }
 \description{
-An example dataset where our treatment is the hospital structure
+An example dataset where our treatment is the hospital structure.
 }
 \keyword{datasets}

@@ -7,15 +7,18 @@
 mcdeloof(comparable_data, n.cores)
 }
 \arguments{
-\item{comparable_data}{a dataframe or equivalent, which columns are ordered factors or numeric variables}
+\item{comparable_data}{A dataframe or equivalent, which columns are ordered factors or numeric
+variables.}
 
-\item{n.cores}{number of cores to be used}
+\item{n.cores}{Number of cores to be used.}
 }
 \value{
-a vector containing the average rank of all the observations (it's recommended to normalized it before use)
+A vector containing the average rank of all the observations (it is
+recommended to normalized it before use).
 }
 \description{
-Compute the average with using Deloof's approximation, using parallel computing; it can be used only on Linux and Mac systems!
+Compute the average with using Deloof's approximation, using parallel
+computing; it can be used only on Linux and Mac systems!
 }
 \examples{
 AR = mcdeloof(deloof_data, n.cores = 1)

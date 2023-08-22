@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Matching on poset-based average rank for multiple treatments (MARMoT).
-#' 
+#'
 #' @details
 #' There are many scenarios where classic propensity score techniques are not
 #' applicable (e.g. there are many treatments). In a multiple-treatment
@@ -16,7 +16,7 @@
 #' a profile of their characteristics, and an average rank approximation is
 #' associated with each profile. This value represents the significance of
 #' individual characteristics for treatment allocation and can be normalized for
-#' better interpretability.                                                         2021b).
+#' better interpretability.
 #'
 #' @param data
 #' A dataframe or equivalent.
@@ -43,15 +43,14 @@
 #' application to the estimation of the neighbourhood efect.", Journal of
 #' Statistical Computation and Simulation, 91(4), 836–859.
 #' https://doi.org/10.1080/00949655.2020.1832092
-#' 
+#'
 #' Silan, Margherita, Arpino, Bruno and Boccuzzo, Giovanna (2021), "Matching
 #' on poset-based average rank for multiple treatments to compare many
-#' unbalanced groups.", Statistics in Medocone, 40(28), 6443–6458.
+#' unbalanced groups.", Statistics in Medicine, 40(28), 6443–6458.
 #' https://doi.org/10.1002/sim.9192
 #'
 #' @examples
-#' out = MARMoT(data = MARMoT_data, confounders = c("race", "age"),
-#'       treatment = "hospital", n.cores = 1)
+#' MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital", n.cores = 1)
 #'
 MARMoT = function(data, confounders, treatment, reference = "median", n.cores = 1){
 

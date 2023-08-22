@@ -1,13 +1,15 @@
 #' Average rank with Deloof's approximation
 #'
 #' @description
-#' Compute the average with using Deloof's approximation
+#' Compute the average with using Deloof's approximation.
 #'
 #' @param comparable_data
-#' a dataframe or equivalent, which columns are ordered factors or numeric variables
+#' A dataframe or equivalent, which columns are ordered factors or numeric
+#' variables.
 #'
 #' @return
-#' a vector containing the average rank of all the observations (it's recommended to normalized it before use)
+#' A vector containing the average rank of all observations (it is recommended
+#' to normalized it before use).
 #' @export
 #'
 #' @examples

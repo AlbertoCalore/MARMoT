@@ -40,11 +40,10 @@ model specifications for treatment allocation. Each subject is represented by
 a profile of their characteristics, and an average rank approximation is
 associated with each profile. This value represents the significance of
 individual characteristics for treatment allocation and can be normalized for
-better interpretability.                                                         2021b).
+better interpretability.
 }
 \examples{
-out = MARMoT(data = MARMoT_data, confounders = c("race", "age"),
-      treatment = "hospital", n.cores = 1)
+MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital", n.cores = 1)
 
 }
 \references{
@@ -56,6 +55,6 @@ https://doi.org/10.1080/00949655.2020.1832092
 
 Silan, Margherita, Arpino, Bruno and Boccuzzo, Giovanna (2021), "Matching
 on poset-based average rank for multiple treatments to compare many
-unbalanced groups.", Statistics in Medocone, 40(28), 6443–6458.
+unbalanced groups.", Statistics in Medicine, 40(28), 6443–6458.
 https://doi.org/10.1002/sim.9192
 }

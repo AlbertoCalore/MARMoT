@@ -7,13 +7,15 @@
 deloof(comparable_data)
 }
 \arguments{
-\item{comparable_data}{a dataframe or equivalent, which columns are ordered factors or numeric variables}
+\item{comparable_data}{A dataframe or equivalent, which columns are ordered factors or numeric
+variables.}
 }
 \value{
-a vector containing the average rank of all the observations (it's recommended to normalized it before use)
+A vector containing the average rank of all observations (it is recommended
+to normalized it before use).
 }
 \description{
-Compute the average with using Deloof's approximation
+Compute the average with using Deloof's approximation.
 }
 \examples{
 AR = deloof(deloof_data)
