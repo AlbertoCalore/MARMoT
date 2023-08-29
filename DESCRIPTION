@@ -1,8 +1,11 @@
 Package: MARMoT
 Title: Matching on Poset-Based Average Rank for Multiple Treatments (MARMoT)
 Version: 0.0.1
-Authors@R: 
-    person("Alberto", "Calore", , "calorealberto57@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+    person("Alberto", "Calore", email = "calorealberto57@gmail.com", role = c("aut", "cre")),
+    person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut", "cre")),
+    person("Margherita", "Silan", email = "margherita.silan@unipd.it", role = c("cph"))
+    )
 Description: It contains the function to apply MARMoT balancing technique; 
              furthermore it contains a function for computing the Deloof's approximation of the average rank 
              (and also a parallelized version) and a function to compute the Absolute Standardized Bias. 
