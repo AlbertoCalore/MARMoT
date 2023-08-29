@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{deloof_data}}{
 
-A data frame with 7,240 rows and 60 columns:
+A data frame with 8,450 rows and 2 columns:
 \describe{
 \item{comorbidities, age}{our partially ordered variables}
 }
