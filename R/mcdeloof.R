@@ -15,6 +15,10 @@
 #' recommended to normalized it before use).
 #' @export
 #'
+#' @references
+#' Caperna, G., 2019. Approximation of AverageRank by means of a formula.
+#' https://doi.org/10.5281/zenodo.2565699
+#'
 #' @examples
 #' AR = mcdeloof(deloof_data, n.cores = 1)
 #'
