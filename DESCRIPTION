@@ -3,7 +3,7 @@ Title: Matching on Poset-Based Average Rank for Multiple Treatments (MARMoT)
 Version: 0.0.1
 Authors@R: c(
     person("Alberto", "Calore", email = "calorealberto57@gmail.com", role = c("aut", "cre")),
-    person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut", "cre")),
+    person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut")),
     person("Margherita", "Silan", email = "margherita.silan@unipd.it", role = c("cph"))
     )
 Description: It contains the function to apply MARMoT balancing technique; 
