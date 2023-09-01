@@ -49,9 +49,10 @@ MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital
 \references{
 Silan, M., Boccuzzo, G. and Arpino, B., 2021. 'Matching on poset‐based average
 rank for multiple treatments to compare many unbalanced groups'. Statistics in
-Medicine, 40(28), pp.6443-6458.
+Medicine, 40(28), pp.6443-6458. https://doi.org/10.1002/sim.9192
 
 Silan, M., Belloni, P. and Boccuzzo, G., 2023. 'Identification of
 neighborhood clusters on data balanced by a poset-based approach'.
 Statistical Methods & Applications, pp.1-22.
+https://doi.org/10.1007/s10260-023-00695-0
 }

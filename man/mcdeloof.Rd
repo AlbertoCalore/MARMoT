@@ -24,3 +24,7 @@ computing; it can be used only on Linux and Mac systems!
 AR = mcdeloof(deloof_data, n.cores = 1)
 
 }
+\references{
+Caperna, G., 2019. Approximation of AverageRank by means of a formula.
+https://doi.org/10.5281/zenodo.2565699
+}
