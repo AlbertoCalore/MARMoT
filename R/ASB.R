@@ -20,31 +20,28 @@
 #'
 ASB = function(data, confounders, treatment){
 
-  ASB_data = ASB.table.init(data, confounders, treatment)
+  tab_list = ASB.tab.list(data, confounders, treatment)
+  tab = ASB.chain.matrix.list(tab_list)
 
-  ASB_data_single = ASB.confounders.tables(confounders, data, treatment, ASB_data)
+  sel_vector = sel.vector(confounders, data)
 
-  ASB_data = ASB.table(ASB_data_single, ASB_data)
+  new_rownames_list = ASB.new.rownames.list(confounders, data)
+  new_rownames = ASB.chain.vector.list(new_rownames_list)
+  rownames(tab) = paste0(new_rownames, sep = "_", rownames(tab))
 
-  nms_list = ASB.tab.names(data, confounders)
+  tab = ASB.remove.one.level(tab, sel_vector)
 
-  ASB_data = ASB.tab.give.rownames(ASB_data, nms_list)
+  n_x_trt = ASB.n.x.trt(data, treatment)
+  tab_perc = ASB.tab.perc(tab, n_x_trt)
+  var_trt = ASB.var.trt(tab_perc)
+  tab_tot = ASB.tab.tot(tab)
+  tab_tot_perc = ASB.tab.tot.perc(tab_tot, n_x_trt)
+  var_tot = ASB.var.tot(tab_tot_perc)
 
-  n_trt = ASB.n.treatment(data, treatment)
+  numerator = ASB.numerator(tab_perc, tab_tot_perc)
+  denominator = ASB.denominator(var_trt, var_tot)
 
-  all_pop = ASB.pop.confounders(ASB_data)
-
-  ASB_data = ASB.prop.confounders(ASB_data, n_trt)
-
-  all_pop = ASB.all.pop.prop(all_pop, data)
-
-  all_pop_matrix = ASB.pop.matrix(ASB_data, all_pop)
-
-  numerator = ASB.numerator(ASB_data, all_pop_matrix)
-
-  denominator = ASB.denominator(ASB_data, all_pop_matrix)
-
-  ASB_result = ASB.result.matrix(numerator, denominator)
+  ASB_result = ASB.results.matrix(numerator, denominator)
 
   ASB_statistics = ASB.statistics(ASB_result)
   print(round(ASB_statistics, digits = 3))
@@ -57,157 +54,151 @@ ASB = function(data, confounders, treatment){
 # -------------------------------------------------------------------------
 # -------------------------------------------------------------------------
 
-ASB.table.init = function(data, confounders, treatment){
-  ASB_data = table(data[, confounders[1]], data[, treatment])[0,]
-  return(ASB_data)
+ASB.tab.single = function(x, data, treatment){
+  tab_single = table(data[, x], data[, treatment])
+  return(tab_single)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.single.table.data = function(c, data, treatment){
-  ASB_single_table_data = table(data[, c], data[, treatment])
-  return(ASB_single_table_data)
+ASB.tab.list = function(data, confounders, treatment){
+  tab_list = lapply(confounders, ASB.tab.single, data, treatment)
+  return(tab_list)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.single.table = function(ASB_single_table_data, ASB_data){
-  if(nrow(ASB_single_table_data) == 2){
-    ASB_data_single = rbind(ASB_data, ASB_single_table_data[1, ])
-  } else(ASB_data_single = rbind(ASB_data, ASB_single_table_data))
-  return(ASB_data_single)
-}
-
-# -------------------------------------------------------------------------
-
-ASB.binding.tables = function(c, data, treatment, ASB_data){
-  ASB_single_table_data = ASB.single.table.data(c, data, treatment)
-  ASB_data_single = ASB.single.table(ASB_single_table_data, ASB_data)
-  return(ASB_data_single)
-}
-
-# -------------------------------------------------------------------------
-
-ASB.confounders.tables = function(confounders, data, treatment, ASB_data){
-  ASB_data_single = lapply(confounders, ASB.binding.tables, data, treatment, ASB_data)
-  return(ASB_data_single)
-}
-
-
-# -------------------------------------------------------------------------
-
-ASB.table = function(ASB_data_single, ASB_data){
-  for (i in 1:length(ASB_data_single)) {
-    ASB_data = rbind(ASB_data, ASB_data_single[[i]])
+ASB.chain.matrix.list = function(lst){
+  tab = lst[[1]]
+  for (j in 2:length(lst)) {
+    tab = rbind(tab, lst[[j]])
   }
-  return(ASB_data)
+  return(tab)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.tab.single.name = function(c, data){
-  if(is.factor(data[, c]))
-    {lvs = levels(data[, c])}else{lvs = unique(data[, c])}
-  nms = paste0(c, sep = "_", lvs)
-  if(length(nms) == 2){nms = nms[1]}
-  return(nms)
+ASB.rm.one.level.single = function(c, data){
+  lv = unique(data[, c])
+  n_lv = length(lv)
+  if(n_lv == 2){
+    sel_vector = c(1, 0)
+  } else{
+    sel_vector = rep(1, length(lv))
+  }
+  return(sel_vector)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.tab.names = function(data, confounders){
-  nms_list = lapply(confounders, ASB.tab.single.name, data)
-  nms_list = unlist(nms_list)
-  return(nms_list)
+ASB.rm.one.level.list = function(confounders, data){
+  sel_vector_list = lapply(confounders, ASB.rm.one.level.single, data)
+  return(sel_vector_list)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.tab.give.rownames = function(ASB_data, nms_list){
-  rownames(ASB_data) = nms_list
-  return(ASB_data)
-}
-
-
-# -------------------------------------------------------------------------
-
-ASB.n.treatment = function(data, treatment){
-  n_trt = as.numeric(table(data[, treatment]))
-  return(n_trt)
+ASB.chain.vector.list = function(lst){
+  tab = lst[[1]]
+  for (j in 2:length(lst)) {
+    tab = c(tab, lst[[j]])
+  }
+  return(tab)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.pop.confounders = function(ASB_data){
-  all_pop = rowSums(ASB_data)
-  return(all_pop)
-}
-
-
-# -------------------------------------------------------------------------
-
-ASB.prop.confounders = function(ASB_data, n_trt){
-  ASB_data = t(t(ASB_data) / n_trt)
-  return(ASB_data)
+sel.vector = function(confounders, data){
+  sel_vector_list = ASB.rm.one.level.list(confounders, data)
+  sel_vector = ASB.chain.vector.list(sel_vector_list)
+  sel_vector = sel_vector*c(1:length(sel_vector))
+  return(sel_vector)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.all.pop.prop = function(all_pop, data){
-  all_pop = all_pop / nrow(data)
-  return(all_pop)
-}
-
-
-# -------------------------------------------------------------------------
-
-ASB.pop.matrix.single.col = function(n, all_pop){
-  n = all_pop
-  return(all_pop)
+ASB.new.rownames.single = function(c, data){
+  lv = levels(data[, c])
+  n_lv = length(lv)
+  name_vec = rep(c, n_lv)
+  return(name_vec)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.pop.matrix = function(ASB_data, all_pop){
-  all_pop_matrix = apply(ASB_data, 2, ASB.pop.matrix.single.col, all_pop)
-  return(all_pop_matrix)
+ASB.new.rownames.list = function(confounders, data){
+  names_list = lapply(confounders, ASB.new.rownames.single, data)
+  return(names_list)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.numerator = function(ASB_data, all_pop_matrix){
-  numerator = abs(ASB_data - all_pop_matrix)
-  return(numerator)
+ASB.remove.one.level = function(tab, sel_vector){
+  tab = tab[sel_vector, ]
+  return(tab)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.var.trt = function(ASB_data){
-  var_trt = ASB_data*(1-ASB_data)
+ASB.n.x.trt = function(data, treatment){
+  n_x_trt = c(table(data[, treatment]))
+  return(n_x_trt)
+}
+
+# -------------------------------------------------------------------------
+
+ASB.tab.perc = function(tab, n_x_trt){
+  tab_perc = t(t(tab) / n_x_trt)
+  return(tab_perc)
+}
+
+# -------------------------------------------------------------------------
+
+ASB.var.trt = function(tab_perc){
+  var_trt = tab_perc*(1-tab_perc)
   return(var_trt)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.var.pop = function(all_pop_matrix){
-  var_pop = all_pop_matrix*(1 - all_pop_matrix)
-  return(var_pop)
+ASB.tab.tot = function(tab){
+  tab_tot = rowSums(tab)
+  return(tab_tot)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.denominator = function(ASB_data, all_pop_matrix){
-  var_trt = ASB.var.trt(ASB_data)
-  var_pop = ASB.var.pop(all_pop_matrix)
-  denominator = sqrt(var_pop/2 + var_trt/2)
-  return(denominator)
+ASB.tab.tot.perc = function(tab_tot, n_x_trt){
+  tab_tot_perc = tab_tot / sum(n_x_trt)
+  return(tab_tot_perc)
 }
 
 # -------------------------------------------------------------------------
 
-ASB.result.matrix = function(numerator, denominator){
-  ASB_result = numerator / denominator *100
-  return(ASB_result)
+ASB.var.tot = function(tab_tot_perc){
+  var_tot = tab_tot_perc*(1-tab_tot_perc)
+  return(var_tot)
+}
+
+# -------------------------------------------------------------------------
+
+ASB.numerator = function(tab_perc, tab_tot_perc){
+  num = abs(tab_perc - tab_tot_perc)
+  return(num)
+}
+
+# -------------------------------------------------------------------------
+
+ASB.denominator = function(var_trt, var_tot){
+  den = (sqrt((var_trt + var_tot) / 2))
+  return(den)
+}
+
+# -------------------------------------------------------------------------
+
+ASB.results.matrix = function(num, den){
+  ASB = num / den * 100
+  return(ASB)
 }
 
 # -------------------------------------------------------------------------
