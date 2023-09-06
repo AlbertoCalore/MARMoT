@@ -24,6 +24,8 @@
 #'
 mcdeloof = function(comparable_data, n.cores){
 
+  deloof.check.os()
+
   profiles = parsec::pop2prof(comparable_data, sep = "")
   incidence_matrix_zeta = mcgetzeta(profiles, n.cores)
 
