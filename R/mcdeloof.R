@@ -64,6 +64,16 @@ mcdeloof = function(comparable_data, n.cores){
 # -------------------------------------------------------------------------
 # -------------------------------------------------------------------------
 
+deloof.check.os = function(){
+  os = Sys.info()["sysname"]
+  if(os == "Windows"){
+    message("You can't use multiple cores on Windows (set n.cores = 1)")
+    stop()
+  }
+}
+
+# -------------------------------------------------------------------------
+
 mcsapply = function (X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE, n.cores)
 {
   FUN <- match.fun(FUN)
