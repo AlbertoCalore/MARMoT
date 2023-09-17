@@ -106,6 +106,21 @@ bal.median0 = function(tabella){
 
 # -------------------------------------------------------------------------
 
+bal.min = function(tabella){
+  median = ifelse(ceiling(apply(tabella, 1, min)) == 0, 1,
+                  ceiling(apply(tabella, 1, min)))
+  return(median)
+}
+
+# -------------------------------------------------------------------------
+
+bal.max = function(tabella){
+  median = ceiling(apply(tabella, 1, max))
+  return(median)
+}
+
+# -------------------------------------------------------------------------
+
 #alternative statistics
 
 # -------------------------------------------------------------------------
@@ -115,6 +130,8 @@ bal.ref.selector = function(tabella, reference){
   if(reference == "mean"){ref = bal.mean(tabella)}
   if(reference == "mean0"){ref = bal.mean0(tabella)}
   if(reference == "median0"){ref = bal.median0(tabella)}
+  if(reference == "min"){ref = bal.min(tabella)}
+  if(reference == "max"){ref = bal.max(tabella)}
   return(ref)
 }
 
