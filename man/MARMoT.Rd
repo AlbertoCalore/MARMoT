@@ -4,7 +4,14 @@
 \alias{MARMoT}
 \title{MARMoT balancing method}
 \usage{
-MARMoT(data, confounders, treatment, reference = "median", n.cores = 1)
+MARMoT(
+  data,
+  confounders,
+  treatment,
+  reference = "median",
+  n.cores = 1,
+  sd_fraction = 0.25
+)
 }
 \arguments{
 \item{data}{A dataframe or equivalent.}
@@ -19,6 +26,8 @@ process. Default is median.}
 \item{n.cores}{Number of cores to be used (Linux and Mac systems only!); if a
 number grater than 1 is specified the function will use a parallelized
 version of the deloof approximation. Default set to 1.}
+
+\item{sd_fraction}{tmp}
 }
 \value{
 A list of objects, also containing the balanced dataset with the same

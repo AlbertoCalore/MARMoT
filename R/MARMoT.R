@@ -31,6 +31,7 @@
 #' Number of cores to be used (Linux and Mac systems only!); if a
 #' number grater than 1 is specified the function will use a parallelized
 #' version of the deloof approximation. Default set to 1.
+#' @param sd_fraction tmp
 #'
 #' @return
 #' A list of objects, also containing the balanced dataset with the same
@@ -50,7 +51,8 @@
 #' @examples
 #' MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital", n.cores = 1)
 #'
-MARMoT = function(data, confounders, treatment, reference = "median", n.cores = 1){
+MARMoT = function(data, confounders, treatment, reference = "median",
+                  n.cores = 1, sd_fraction = 0.25){
 
 
   # Convert factor to ordinal -----------------------------------------------
@@ -86,14 +88,16 @@ MARMoT = function(data, confounders, treatment, reference = "median", n.cores = 
 
 
   print("... Balancing ...")
-  balanced_data = balancing(data = data, treatment = treatment, AR = AR, reference)
+  balanced_data = balancing(data = data, treatment = treatment, AR = AR,
+                            reference, sd_fraction)
 
 
   # ASB post ----------------------------------------------------------------
 
 
   print("Absolute standardized bias - after balancing")
-  ASB_post = ASB(data = balanced_data, confounders = confounders, treatment = treatment)
+  ASB_post = ASB(data = balanced_data, confounders = confounders,
+                 treatment = treatment)
 
 
   # Output ------------------------------------------------------------------

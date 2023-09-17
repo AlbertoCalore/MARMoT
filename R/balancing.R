@@ -1,6 +1,66 @@
 # MARMoT balancing --------------------------------------------------------
 
+balancing = function(data, treatment, AR, reference, sd_fraction){
 
+  data$AR = AR
+
+  tabella = bal.table(data, treatment)
+
+  caliper = bal.caliper(data, sd_fraction)
+
+  ref = bal.ref.selector(tabella, reference)
+
+  # Non match removing -----------------------------------------------------
+
+  AR = bal.sort.AR(AR)
+  no_match = c()
+
+  for (trt in unique(data[, treatment])) {
+
+    data_trt = bal.treatment.data(data, treatment, trt)
+
+    zeroes_match = bal.zero.match(tabella, trt, AR)
+
+    for(single_zero_match in zeroes_match){
+
+      elegible = bal.elegible.data(ref, single_zero_match, caliper, data_trt)
+      no_match = bal.no.elegible(single_zero_match, elegible, no_match)
+
+    }
+  }
+
+  no_match = unique(no_match)
+
+  # Balancing -----------------------------------------------------------
+
+  balanced_data = data[0,]
+
+  for (trt in unique(data[, treatment])) {
+
+    data_trt = bal.treatment.data(data, treatment, trt)
+
+    # Zeroes ----------------------------------------------------------------
+
+    zeroes = bal.zeroes(data, data_trt, AR, tabella, trt, ref, caliper, no_match)
+
+    # Exact match -----------------------------------------------------------
+
+    exact = bal.exact(data_trt, AR, tabella, trt, ref, no_match)
+
+    # Inexact match (but non zero) ------------------------------------------
+
+    inexact = bal.inexact(data, data_trt, AR, tabella, trt, ref, no_match)
+
+    # Merge -----------------------------------------------------------------
+
+    balanced_data = rbind(balanced_data, exact, inexact, zeroes)
+  }
+
+  return(balanced_data)
+}
+
+
+# -------------------------------------------------------------------------
 # -------------------------------------------------------------------------
 
 bal.table = function(data, treatment){
@@ -10,8 +70,8 @@ bal.table = function(data, treatment){
 
 # -------------------------------------------------------------------------
 
-bal.caliper = function(data){
-  caliper = stats::sd(data[, "AR"])/4
+bal.caliper = function(data, sd_fraction){
+  caliper = stats::sd(data[, "AR"])*sd_fraction
   return(caliper)
 }
 
@@ -25,12 +85,36 @@ bal.median = function(tabella){
 
 # -------------------------------------------------------------------------
 
+bal.mean = function(tabella){
+  mean = ceiling(apply(tabella, 1, mean))
+  return(mean)
+}
+
+# -------------------------------------------------------------------------
+
+bal.mean0 = function(tabella){
+  mean = floor(apply(tabella, 1, mean))
+  return(mean)
+}
+
+# -------------------------------------------------------------------------
+
+bal.median0 = function(tabella){
+  median = ceiling(apply(tabella, 1, median))
+  return(median)
+}
+
+# -------------------------------------------------------------------------
+
 #alternative statistics
 
 # -------------------------------------------------------------------------
 
 bal.ref.selector = function(tabella, reference){
   if(reference == "median"){ref = bal.median(tabella)}
+  if(reference == "mean"){ref = bal.mean(tabella)}
+  if(reference == "mean0"){ref = bal.mean0(tabella)}
+  if(reference == "median0"){ref = bal.median0(tabella)}
   return(ref)
 }
 
@@ -221,69 +305,4 @@ bal.zeroes = function(data, data_trt, AR, tabella, trt, ref, caliper, no_match){
   }
   return(zeroes)
 }
-
-
-# -------------------------------------------------------------------------
-# -------------------------------------------------------------------------
-
-
-balancing = function(data, treatment, AR, reference){
-
-  data$AR = AR
-
-  tabella = bal.table(data, treatment)
-
-  caliper = bal.caliper(data)
-
-  ref = bal.ref.selector(tabella, reference)
-
-  # Non match removing -----------------------------------------------------
-
-  AR = bal.sort.AR(AR)
-  no_match = c()
-
-  for (trt in unique(data[, treatment])) {
-
-    data_trt = bal.treatment.data(data, treatment, trt)
-
-    zeroes_match = bal.zero.match(tabella, trt, AR)
-
-    for(single_zero_match in zeroes_match){
-
-      elegible = bal.elegible.data(ref, single_zero_match, caliper, data_trt)
-      no_match = bal.no.elegible(single_zero_match, elegible, no_match)
-
-    }
-  }
-
-  no_match = unique(no_match)
-
-  # Balancing -----------------------------------------------------------
-
-  balanced_data = data[0,]
-
-  for (trt in unique(data[, treatment])) {
-
-    data_trt = bal.treatment.data(data, treatment, trt)
-
-    # Zeroes ----------------------------------------------------------------
-
-    zeroes = bal.zeroes(data, data_trt, AR, tabella, trt, ref, caliper, no_match)
-
-    # Exact match -----------------------------------------------------------
-
-    exact = bal.exact(data_trt, AR, tabella, trt, ref, no_match)
-
-    # Inexact match (but non zero) ------------------------------------------
-
-    inexact = bal.inexact(data, data_trt, AR, tabella, trt, ref, no_match)
-
-    # Merge -----------------------------------------------------------------
-
-    balanced_data = rbind(balanced_data, exact, inexact, zeroes)
-  }
-
-  return(balanced_data)
-}
-
 
