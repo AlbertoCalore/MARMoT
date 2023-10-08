@@ -10,7 +10,7 @@ MARMoT(
   treatment,
   reference = "median",
   n.cores = 1,
-  sd_fraction = 0.25
+  caliper = 0.25
 )
 }
 \arguments{
@@ -27,7 +27,8 @@ process. Default is median.}
 number grater than 1 is specified the function will use a parallelized
 version of the deloof approximation. Default set to 1.}
 
-\item{sd_fraction}{tmp}
+\item{caliper}{Fraction of the standard deviation used to determine the closest neighbour.
+Default is 0.25.}
 }
 \value{
 A list of objects, also containing the balanced dataset with the same

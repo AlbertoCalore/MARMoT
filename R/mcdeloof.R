@@ -24,42 +24,46 @@
 #'
 mcdeloof = function(comparable_data, n.cores){
 
-  deloof.check.os()
+  print(deloof.check.os())
 
-  profiles = parsec::pop2prof(comparable_data, sep = "")
-  incidence_matrix_zeta = mcgetzeta(profiles, n.cores)
+  if(deloof.check.os()){
 
-  profile_list = deloof.profile.list(profiles)
-  n_profiles = deloof.n.profiles(profile_list)
+    profiles = parsec::pop2prof(comparable_data, sep = "")
+    incidence_matrix_zeta = mcgetzeta(profiles, n.cores)
 
-  incomparables = parsec::incomp(incidence_matrix_zeta)
+    profile_list = deloof.profile.list(profiles)
+    n_profiles = deloof.n.profiles(profile_list)
 
-  prob_matrix = deloof.mut.prob.matrix(n_profiles, profile_list)
+    incomparables = parsec::incomp(incidence_matrix_zeta)
 
-  row_positions = deloof.lo.row.positions(n_profiles)
-  col_positions = deloof.lo.col.positions(n_profiles)
+    prob_matrix = deloof.mut.prob.matrix(n_profiles, profile_list)
 
-  downsets = deloof.sets(incidence_matrix_zeta, 2)
-  upsets = deloof.sets(incidence_matrix_zeta, 1)
+    row_positions = deloof.lo.row.positions(n_profiles)
+    col_positions = deloof.lo.col.positions(n_profiles)
 
-  lo_prob = deloof.lo.prob(upsets, downsets, row_positions, col_positions)
+    downsets = deloof.sets(incidence_matrix_zeta, 2)
+    upsets = deloof.sets(incidence_matrix_zeta, 1)
 
-  prob_matrix = deloof.prob.matrix(prob_matrix, lo_prob, incomparables)
+    lo_prob = deloof.lo.prob(upsets, downsets, row_positions, col_positions)
 
-  downsets2 = deloof.sets.update(downsets, 1, prob_matrix)
-  upsets2 = deloof.sets.update(upsets, 2, prob_matrix)
+    prob_matrix = deloof.prob.matrix(prob_matrix, lo_prob, incomparables)
 
-  prob_matrix2 = deloof.mut.prob.matrix(n_profiles, profile_list)
+    downsets2 = deloof.sets.update(downsets, 1, prob_matrix)
+    upsets2 = deloof.sets.update(upsets, 2, prob_matrix)
 
-  lo_prob2 = deloof.lo.prob(upsets2, downsets2, row_positions, col_positions)
+    prob_matrix2 = deloof.mut.prob.matrix(n_profiles, profile_list)
 
-  prob_matrix2 = deloof.prob.matrix(prob_matrix2, lo_prob2, incomparables)
+    lo_prob2 = deloof.lo.prob(upsets2, downsets2, row_positions, col_positions)
 
-  result = deloof.result(downsets, prob_matrix2)
+    prob_matrix2 = deloof.prob.matrix(prob_matrix2, lo_prob2, incomparables)
 
-  rank_list = deloof.rank.list(comparable_data, result, profile_list, n_profiles)
+    result = deloof.result(downsets, prob_matrix2)
 
-  return(rank_list)
+    rank_list = deloof.rank.list(comparable_data, result, profile_list, n_profiles)
+
+    return(rank_list)
+
+    } else{print("You can't use multiple cores on Windows (set n.cores = 1)")}
 }
 
 
@@ -68,10 +72,10 @@ mcdeloof = function(comparable_data, n.cores){
 
 deloof.check.os = function(){
   os = Sys.info()["sysname"]
-  if(os == "Windows"){
-    message("You can't use multiple cores on Windows (set n.cores = 1)")
-    stop()
-  }
+  if(os != "Windows"){
+    no_win = TRUE
+  } else {no_win = FALSE}
+  return(no_win)
 }
 
 # -------------------------------------------------------------------------

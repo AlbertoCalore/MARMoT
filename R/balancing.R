@@ -1,12 +1,12 @@
 # MARMoT balancing --------------------------------------------------------
 
-balancing = function(data, treatment, AR, reference, sd_fraction){
+balancing = function(data, treatment, AR, reference, caliper){
 
   data$AR = AR
 
   tabella = bal.table(data, treatment)
 
-  caliper = bal.caliper(data, sd_fraction)
+  caliper = bal.caliper(data, caliper)
 
   ref = bal.ref.selector(tabella, reference)
 
@@ -70,8 +70,8 @@ bal.table = function(data, treatment){
 
 # -------------------------------------------------------------------------
 
-bal.caliper = function(data, sd_fraction){
-  caliper = stats::sd(data[, "AR"])*sd_fraction
+bal.caliper = function(data, caliper){
+  caliper = stats::sd(data[, "AR"])*caliper
   return(caliper)
 }
 
