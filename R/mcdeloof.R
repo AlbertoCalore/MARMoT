@@ -24,11 +24,10 @@
 #'
 mcdeloof = function(comparable_data, n.cores){
 
-  print(deloof.check.os())
-
   if(deloof.check.os()){
 
     profiles = parsec::pop2prof(comparable_data, sep = "")
+    class(profiles) = "list"
     incidence_matrix_zeta = mcgetzeta(profiles, n.cores)
 
     profile_list = deloof.profile.list(profiles)
