@@ -57,6 +57,13 @@ MARMoT = function(data, confounders, treatment, reference = "median",
                   n.cores = 1, caliper = 0.25){
 
 
+
+  # Start time --------------------------------------------------------------
+
+
+  start_time = Sys.time()
+
+
   # Convert factor to ordinal -----------------------------------------------
 
 
@@ -102,10 +109,17 @@ MARMoT = function(data, confounders, treatment, reference = "median",
                  treatment = treatment)
 
 
+
+  # End time ----------------------------------------------------------------
+
+
+  time = difftime(Sys.time(), start_time, units = "mins")
+
+
   # Output ------------------------------------------------------------------
 
 
-  output = output.maker(balanced_data, ASB_pre, ASB_post)
+  output = output.maker(balanced_data, ASB_pre, ASB_post, time)
 
 
   return(output)
