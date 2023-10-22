@@ -4,7 +4,9 @@ balancing = function(data, treatment, AR, reference, caliper){
 
   data$AR = AR
 
-  tabella = bal.table(data, treatment)
+  AR_sorted = bal.sort.AR(AR)
+
+  tabella = bal.better.tab(AR_sorted, data, treatment)
 
   caliper = bal.caliper(data, caliper)
 
@@ -12,7 +14,7 @@ balancing = function(data, treatment, AR, reference, caliper){
 
   # Non match removing -----------------------------------------------------
 
-  AR = bal.sort.AR(AR)
+  AR = AR_sorted
   no_match = c()
 
   for (trt in unique(data[, treatment])) {
@@ -23,7 +25,7 @@ balancing = function(data, treatment, AR, reference, caliper){
 
     for(single_zero_match in zeroes_match){
 
-      elegible = bal.elegible.data(ref, single_zero_match, caliper, data_trt)
+      elegible = bal.elegible.data(single_zero_match, caliper, data_trt)
       no_match = bal.no.elegible(single_zero_match, elegible, no_match)
 
     }
@@ -41,7 +43,7 @@ balancing = function(data, treatment, AR, reference, caliper){
 
     # Zeroes ----------------------------------------------------------------
 
-    zeroes = bal.zeroes(data, data_trt, AR, tabella, trt, ref, caliper, no_match)
+    zeroes = bal.zeroes(data_trt, AR, tabella, trt, ref, caliper, no_match, AR_sorted)
 
     # Exact match -----------------------------------------------------------
 
@@ -49,13 +51,14 @@ balancing = function(data, treatment, AR, reference, caliper){
 
     # Inexact match (but non zero) ------------------------------------------
 
-    inexact = bal.inexact(data, data_trt, AR, tabella, trt, ref, no_match)
+    inexact = bal.inexact(data_trt, AR, tabella, trt, ref, no_match, AR_sorted)
 
     # Merge -----------------------------------------------------------------
 
     balanced_data = rbind(balanced_data, exact, inexact, zeroes)
   }
 
+  balanced_data[, "AR"] = NULL
   return(balanced_data)
 }
 
@@ -63,9 +66,22 @@ balancing = function(data, treatment, AR, reference, caliper){
 # -------------------------------------------------------------------------
 # -------------------------------------------------------------------------
 
-bal.table = function(data, treatment){
-  tabella = table(data[, "AR"], data[, treatment])
-  return(tabella)
+bal.better.tab.row = function(single_AR, data, treatment){
+  tab_row = table(data[data[, "AR"] == single_AR, treatment])
+  return(tab_row)
+}
+
+# -------------------------------------------------------------------------
+
+bal.better.tab = function(AR_sorted, data, treatment){
+  data[, treatment] = factor(data[, treatment], levels = unique(data[, treatment]))
+  tab_list = lapply(AR_sorted, bal.better.tab.row, data, treatment)
+  tab = tab_list[[1]]
+  for (i in 2:length(tab_list)) {
+    tab = rbind(tab, tab_list[[i]])
+  }
+  rownames(tab) = NULL
+  return(tab)
 }
 
 # -------------------------------------------------------------------------
@@ -158,8 +174,8 @@ bal.zero.match = function(tabella, trt, AR){
 
 # -------------------------------------------------------------------------
 
-bal.single.ref= function(ref, single_x_match){
-  single_ref = as.numeric(ref[names(ref) == single_x_match])
+bal.single.ref = function(ref, AR_sorted, single_x_match){
+  single_ref = as.numeric(ref[AR_sorted == single_x_match])
   return(single_ref)
 }
 
@@ -182,7 +198,7 @@ bal.AR.floor = function(single_zero_match, caliper){
 bal.closest.elegible = function(elegible, single_zero_match){
   AR_elegible = unique(elegible[, "AR"])
   closest_elegible_AR = AR_elegible[which.min(abs(AR_elegible -
-                                                 single_zero_match))]
+                                                    single_zero_match))]
   closest_elegible = elegible[elegible[, "AR"] == closest_elegible_AR, ]
   return(closest_elegible)
 }
@@ -197,32 +213,11 @@ bal.elegible.substitutes = function(data_trt, top_AR, bottom_AR){
 
 # -------------------------------------------------------------------------
 
-bal.elegible.data = function(ref, single_zero_match, caliper, data_trt){
+bal.elegible.data = function(single_zero_match, caliper, data_trt){
   top_AR = bal.AR.ceiling(single_zero_match, caliper)
   bottom_AR = bal.AR.floor(single_zero_match, caliper)
   elegible = bal.elegible.substitutes(data_trt, top_AR, bottom_AR)
   return(elegible)
-}
-
-# -------------------------------------------------------------------------
-
-bal.drop.in.table = function(tabella, single_zero_match){
-  tabella = tabella[rownames(tabella) != single_zero_match, ]
-  return(tabella)
-}
-
-# -------------------------------------------------------------------------
-
-bal.drop.in.ref = function(ref, single_zero_match){
-  ref = ref[names(ref) != single_zero_match]
-  return(ref)
-}
-
-# -------------------------------------------------------------------------
-
-bal.drop.in.AR = function(AR, single_zero_match){
-  AR = AR[AR != single_zero_match]
-  return(AR)
 }
 
 # -------------------------------------------------------------------------
@@ -272,14 +267,14 @@ bal.single.inexact.sampling = function(single_inexact_data, single_ref){
 
 # -------------------------------------------------------------------------
 
-bal.inexact = function(data, data_trt, AR, tabella, trt, ref, no_match){
+bal.inexact = function(data_trt, AR, tabella, trt, ref, no_match, AR_sorted){
   inexact_match = bal.inexact.match(AR, tabella, trt, ref)
-  inexact = data[0,]
+  inexact = data_trt[0,]
 
   for (single_inexact_match in inexact_match) {
 
     if(single_inexact_match %in% no_match){next}
-    single_ref = bal.single.ref(ref, single_inexact_match)
+    single_ref = bal.single.ref(ref, AR_sorted, single_inexact_match)
     single_inexact_data = bal.single.inexact.data(data_trt,
                                                   single_inexact_match)
     single_inexact = bal.single.inexact.sampling(single_inexact_data,
@@ -307,14 +302,14 @@ bal.rm.no.match = function(exact_match, no_match){
 
 # -------------------------------------------------------------------------
 
-bal.zeroes = function(data, data_trt, AR, tabella, trt, ref, caliper, no_match){
+bal.zeroes = function(data_trt, AR, tabella, trt, ref, caliper, no_match, AR_sorted){
   zeroes_match = bal.zero.match(tabella, trt, AR)
-  zeroes = data[0, ]
+  zeroes = data_trt[0, ]
 
   for(single_zero_match in zeroes_match){
     if(single_zero_match %in% no_match){next}
-    single_ref = bal.single.ref(ref, single_zero_match)
-    elegible = bal.elegible.data(ref, single_zero_match, caliper, data_trt)
+    single_ref = bal.single.ref(ref, AR_sorted, single_zero_match)
+    elegible = bal.elegible.data(single_zero_match, caliper, data_trt)
     elegible = bal.closest.elegible(elegible, single_zero_match)
     single_zeroes = elegible[sample(nrow(elegible),
                                     single_ref, replace = T), ]
@@ -322,4 +317,5 @@ bal.zeroes = function(data, data_trt, AR, tabella, trt, ref, caliper, no_match){
   }
   return(zeroes)
 }
+
 
