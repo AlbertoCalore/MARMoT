@@ -6,8 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package contains the function to apply MARMoT balancing technique;
-furthermore it contains a function for computing the Deloof’s
+This R package contains the function to apply MARMoT balancing technique;
+furthermore, it contains a function for computing the Deloof’s
 approximation of the average rank (and also a parallelized version) and
 a function to compute the Absolute Standardized Bias.
 
