@@ -6,10 +6,10 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This R package contains the function to apply MARMoT balancing technique;
-furthermore, it contains a function for computing the Deloof’s
-approximation of the average rank (and also a parallelized version) and
-a function to compute the Absolute Standardized Bias.
+This R package contains the function to apply MARMoT balancing
+technique; furthermore, it contains a function for computing the
+Deloof’s approximation of the average rank (and also a parallelized
+version) and a function to compute the Absolute Standardized Bias.
 
 ## Installation
 
@@ -21,7 +21,7 @@ devtools::install_github("AlbertoCalore/MARMoT")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example of the function “MARMoT”:
 
 ``` r
 library(MARMoT)
@@ -41,4 +41,11 @@ out = MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "ho
 ```
 
 ### Foundings
-This package was developed within the project funded by Next Generation EU - “Age-It - Ageing well in an agening society” project (PE0000015), National Recovery and Resilience Plan (NRRP) - PE8 - Mission 4, C2, Intervention 1.3”. The views and opinions expressed are only those of the authors and do not necessarily reflect those of the European Union or the European Commission. Neither the European Union nor the European Commission can be held responsible for them. 
+
+This package was developed within the project funded by Next Generation
+EU - “Age-It - Ageing well in an agening society” project (PE0000015),
+National Recovery and Resilience Plan (NRRP) - PE8 - Mission 4, C2,
+Intervention 1.3”. The views and opinions expressed are only those of
+the authors and do not necessarily reflect those of the European Union
+or the European Commission. Neither the European Union nor the European
+Commission can be held responsible for them.
