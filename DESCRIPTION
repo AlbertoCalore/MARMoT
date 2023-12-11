@@ -4,7 +4,7 @@ Version: 0.0.2
 Authors@R: c(
     person("Alberto", "Calore", email = "calorealberto57@gmail.com", role = c("aut", "cre")),
     person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut")),
-    person("Margherita", "Silan", email = "margherita.silan@unipd.it", role = c("cph"))
+    person("Margherita", "Silan", email = "margherita.silan@unipd.it", role = c("aut"))
     )
 Description: It contains the function to apply MARMoT balancing technique; 
              furthermore it contains a function for computing the Deloof's approximation of the average rank 
