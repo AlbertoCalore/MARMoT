@@ -92,15 +92,15 @@ mcsapply = function (X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE, n.cores)
 
 # -------------------------------------------------------------------------
 
-one.vs.all = function(b, a, y){
+deloof.one.vs.all = function(b, a, y){
   out = all(y[a, ] <= y[b, ])
   return(out)
 }
 
 # -------------------------------------------------------------------------
 
-all.vs.all = function(a, y, m){
-  sapply(1:m , one.vs.all, a, y)
+deloof.all.vs.all = function(a, y, m){
+  sapply(1:m , deloof.one.vs.all, a, y)
 }
 
 # -------------------------------------------------------------------------
@@ -109,7 +109,7 @@ mcgetzeta = function (y, n.cores){
   y = y$profiles
   m = nrow(y)
   nam = rownames(y)
-  res = mcsapply(1:m, all.vs.all, y, m, n.cores = n.cores)
+  res = mcsapply(1:m, deloof.all.vs.all, y, m, n.cores = n.cores)
   res = t(res)
   dimnames(res) = list(nam, nam)
   class(res) <- "incidence"

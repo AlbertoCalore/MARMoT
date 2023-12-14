@@ -32,7 +32,7 @@ check.ord.col = function(data_confounders, check_ord){
 
 # -------------------------------------------------------------------------
 
-all.comparable = function(data_confounders, col_to_order){
+comparable.all = function(data_confounders, col_to_order){
   comparable_confounders = data_confounders
   comparable_confounders[col_to_order] = lapply(comparable_confounders[col_to_order], factor, ordered = T)
   return(comparable_confounders)
@@ -48,7 +48,7 @@ comparables = function(data, confounders){
 
   col_to_order = check.ord.col(data_confounders, check_ord)
 
-  comparable_confounders = all.comparable(data_confounders, col_to_order)
+  comparable_confounders = comparable.all(data_confounders, col_to_order)
 
   return(comparable_confounders)
 }
