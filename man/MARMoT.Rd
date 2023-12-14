@@ -31,7 +31,7 @@ version of the deloof approximation. Default set to 1.}
 \item{caliper}{Fraction of the standard deviation used to determine the closest neighbour.
 Default is 0.25.}
 
-\item{verbose}{description}
+\item{verbose}{Set to FALSE to suppress any console output. Default is TRUE}
 }
 \value{
 A list of objects, also containing the balanced dataset with the same

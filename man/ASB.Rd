@@ -13,7 +13,7 @@ ASB(data, confounders, treatment, verbose = T)
 
 \item{treatment}{A string with the column name of the treatment variable.}
 
-\item{verbose}{description}
+\item{verbose}{Set to FALSE to suppress any console output. Default is TRUE}
 }
 \value{
 A list of objects, containing the ASB matrix and some summary statistics.
