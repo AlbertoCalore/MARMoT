@@ -4,7 +4,7 @@
 \alias{ASB}
 \title{Absolute standardized bias}
 \usage{
-ASB(data, confounders, treatment)
+ASB(data, confounders, treatment, verbose = T)
 }
 \arguments{
 \item{data}{A dataframe or equivalent.}
@@ -12,6 +12,8 @@ ASB(data, confounders, treatment)
 \item{confounders}{A vector with the column names of the confounders to balance by.}
 
 \item{treatment}{A string with the column name of the treatment variable.}
+
+\item{verbose}{description}
 }
 \value{
 A list of objects, containing the ASB matrix and some summary statistics.
