@@ -35,7 +35,7 @@
 #' Fraction of the standard deviation used to determine the closest neighbour.
 #' Default is 0.25.
 #' @param verbose
-#' description
+#' Set to FALSE to suppress any console output. Default is TRUE
 #'
 #' @return
 #' A list of objects, also containing the balanced dataset with the same

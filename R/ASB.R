@@ -11,7 +11,7 @@
 #' @param treatment
 #' A string with the column name of the treatment variable.
 #' @param verbose
-#' description
+#' Set to FALSE to suppress any console output. Default is TRUE
 #'
 #' @return
 #' A list of objects, containing the ASB matrix and some summary statistics.
