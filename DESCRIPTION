@@ -6,7 +6,7 @@ Authors@R: c(
     person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut")),
     person("Margherita", "Silan", email = "margherita.silan@unipd.it", role = c("aut"))
     )
-Description: It contains the function to apply MARMoT balancing technique; 
+Description: It contains the function to apply MARMoT balancing technique discussed in: Silan, Boccuzzo, Arpino (2021) <DOI:10.1002/sim.9192>, Silan, Belloni, Boccuzzo, (2023) <DOI:10.1007/s10260-023-00695-0>; 
              furthermore it contains a function for computing the Deloof's approximation of the average rank 
              (and also a parallelized version) and a function to compute the Absolute Standardized Bias. 
 License: GPL (>= 3)
