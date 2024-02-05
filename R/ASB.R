@@ -20,7 +20,7 @@
 #' @examples
 #' ASB(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital")
 #'
-ASB = function(data, confounders, treatment, verbose = T){
+ASB = function(data, confounders, treatment, verbose = TRUE){
 
   tab_list = ASB.tab.list(data, confounders, treatment)
   tab = ASB.chain.matrix.list(tab_list)

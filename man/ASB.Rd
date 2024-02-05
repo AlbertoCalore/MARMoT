@@ -4,7 +4,7 @@
 \alias{ASB}
 \title{Absolute standardized bias}
 \usage{
-ASB(data, confounders, treatment, verbose = T)
+ASB(data, confounders, treatment, verbose = TRUE)
 }
 \arguments{
 \item{data}{A dataframe or equivalent.}

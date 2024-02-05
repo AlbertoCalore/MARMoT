@@ -62,7 +62,7 @@ mcdeloof = function(comparable_data, n.cores){
 
     return(rank_list)
 
-    } else{print("You can't use multiple cores on Windows (set n.cores = 1)")}
+    } else{warning("You can't use multiple cores on Windows (set n.cores = 1)")}
 }
 
 

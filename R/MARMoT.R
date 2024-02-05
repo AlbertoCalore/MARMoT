@@ -57,7 +57,7 @@
 #'              treatment = "hospital", n.cores = 1)
 #' out
 MARMoT = function(data, confounders, treatment, reference = "median",
-                  n.cores = 1, caliper = 0.25, verbose = T){
+                  n.cores = 1, caliper = 0.25, verbose = TRUE){
 
 
 

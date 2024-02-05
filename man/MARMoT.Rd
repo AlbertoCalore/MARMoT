@@ -11,7 +11,7 @@ MARMoT(
   reference = "median",
   n.cores = 1,
   caliper = 0.25,
-  verbose = T
+  verbose = TRUE
 )
 }
 \arguments{

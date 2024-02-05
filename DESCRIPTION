@@ -1,6 +1,6 @@
 Package: MARMoT
 Title: Matching on Poset-Based Average Rank for Multiple Treatments (MARMoT)
-Version: 0.0.2
+Version: 0.0.4
 Authors@R: c(
     person("Alberto", "Calore", email = "calorealberto57@gmail.com", role = c("aut", "cre")),
     person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut")),
