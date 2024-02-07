@@ -10,7 +10,8 @@ MARMoT(
   treatment,
   reference = "median",
   n.cores = 1,
-  caliper = 0.25
+  caliper = 0.25,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ version of the deloof approximation. Default set to 1.}
 
 \item{caliper}{Fraction of the standard deviation used to determine the closest neighbour.
 Default is 0.25.}
+
+\item{verbose}{Set to FALSE to suppress any console output. Default is TRUE}
 }
 \value{
 A list of objects, also containing the balanced dataset with the same
@@ -53,8 +56,9 @@ individual characteristics for treatment allocation and can be normalized for
 better interpretability.
 }
 \examples{
-MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital", n.cores = 1)
-
+out = MARMoT(data = MARMoT_data, confounders = c("race", "age"),
+             treatment = "hospital", n.cores = 1)
+out
 }
 \references{
 Silan, M., Boccuzzo, G. and Arpino, B., 2021. 'Matching on poset‐based average

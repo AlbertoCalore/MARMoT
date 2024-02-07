@@ -10,6 +10,8 @@
 #' A vector with the column names of the confounders to balance by.
 #' @param treatment
 #' A string with the column name of the treatment variable.
+#' @param verbose
+#' Set to FALSE to suppress any console output. Default is TRUE
 #'
 #' @return
 #' A list of objects, containing the ASB matrix and some summary statistics.
@@ -18,7 +20,7 @@
 #' @examples
 #' ASB(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital")
 #'
-ASB = function(data, confounders, treatment){
+ASB = function(data, confounders, treatment, verbose = TRUE){
 
   tab_list = ASB.tab.list(data, confounders, treatment)
   tab = ASB.chain.matrix.list(tab_list)
@@ -44,7 +46,7 @@ ASB = function(data, confounders, treatment){
   ASB_result = ASB.results.matrix(numerator, denominator)
 
   ASB_statistics = ASB.statistics(ASB_result)
-  print(round(ASB_statistics, digits = 3))
+  if(verbose){print(round(ASB_statistics, digits = 3))}
 
   output = ASB.out(ASB_result, ASB_statistics)
 

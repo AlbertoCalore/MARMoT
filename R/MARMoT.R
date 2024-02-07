@@ -34,6 +34,8 @@
 #' @param caliper
 #' Fraction of the standard deviation used to determine the closest neighbour.
 #' Default is 0.25.
+#' @param verbose
+#' Set to FALSE to suppress any console output. Default is TRUE
 #'
 #' @return
 #' A list of objects, also containing the balanced dataset with the same
@@ -51,10 +53,11 @@
 #' https://doi.org/10.1007/s10260-023-00695-0
 #'
 #' @examples
-#' MARMoT(data = MARMoT_data, confounders = c("race", "age"), treatment = "hospital", n.cores = 1)
-#'
+#' out = MARMoT(data = MARMoT_data, confounders = c("race", "age"),
+#'              treatment = "hospital", n.cores = 1)
+#' out
 MARMoT = function(data, confounders, treatment, reference = "median",
-                  n.cores = 1, caliper = 0.25){
+                  n.cores = 1, caliper = 0.25, verbose = TRUE){
 
 
 
@@ -73,14 +76,15 @@ MARMoT = function(data, confounders, treatment, reference = "median",
   # ASB pre balancing -------------------------------------------------------
 
 
-  print("Absolute standardized bias - before balancing")
-  ASB_pre = ASB(data = data, confounders = confounders, treatment = treatment)
+  if(verbose){print("Absolute standardized bias - before balancing")}
+  ASB_pre = ASB(data = data, confounders = confounders,
+                treatment = treatment, verbose = verbose)
 
 
   # Average rank with deloof approx -----------------------------------------
 
 
-  print("... Computing average rank ...")
+  if(verbose){print("... Computing average rank ...")}
   if(n.cores == 1){
     AR = deloof(comparable_confounders)}
   if(n.cores > 1){
@@ -96,7 +100,7 @@ MARMoT = function(data, confounders, treatment, reference = "median",
   # Balancing ---------------------------------------------------------------
 
 
-  print("... Balancing ...")
+  if(verbose){print("... Balancing ...")}
   balanced_data = balancing(data = data, treatment = treatment, AR = AR,
                             reference, caliper)
 
@@ -104,9 +108,9 @@ MARMoT = function(data, confounders, treatment, reference = "median",
   # ASB post ----------------------------------------------------------------
 
 
-  print("Absolute standardized bias - after balancing")
+  if(verbose){print("Absolute standardized bias - after balancing")}
   ASB_post = ASB(data = balanced_data, confounders = confounders,
-                 treatment = treatment)
+                 treatment = treatment, verbose = verbose)
 
 
 
