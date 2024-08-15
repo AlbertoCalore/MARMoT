@@ -3,7 +3,7 @@
 
 # MARMoT
 
-<!-- badges: start -->
+![](https://cranlogs.r-pkg.org/badges/grand-total/MARMoT?color=orange)
 <!-- badges: end -->
 
 This R package contains the function to apply MARMoT balancing
