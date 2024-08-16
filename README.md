@@ -13,7 +13,13 @@ version) and a function to compute the Absolute Standardized Bias.
 
 ## Installation
 
-You can install the development version of MARMoT like so:
+You can install the stable version of MARMoT like so:
+
+``` r
+install.packages("MARMoT")
+```
+
+or you can install the development version of MARMoT like so:
 
 ``` r
 devtools::install_github("AlbertoCalore/MARMoT")
